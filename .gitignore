@@ -71,3 +71,5 @@ Makefile.*
 *.blend1
 
 # Project specific
+QMLAnalyzer/help
+bin/QMLAnalyzer
