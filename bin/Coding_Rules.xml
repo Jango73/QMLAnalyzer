@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+    <Macro Name="CamelCasingRegExp" Value="([a-z])([a-zA-Z0-9]*)"/>
+    <Macro Name="TooManyStatements" Value="Too many statements, consider refactor"/>
+    <Macro Name="BadImportVersion" Value="Bad import version"/>
+    <Macro Name="OnlyCamelCasing" Value="Only camel casing allowed in names"/>
+    <Macro Name="NoHardcodedPosition" Value="No hardcoded positions allowed"/>
+
+    <Check Class="QMLVariableDeclaration">
+        <Accept Member="name" RegExp="$CamelCasingRegExp$" Text="$OnlyCamelCasing$"/>
+    </Check>
+
+    <Check Class="QMLPropertyDeclaration">
+        <Accept Member="name" RegExp="$CamelCasingRegExp$" Text="$OnlyCamelCasing$"/>
+        <!--
+        <Reject Member="content" Type="int" Text="No magic value allowed in property"/>
+        <Reject Member="content" Type="float" Text="No magic value allowed in property"/>
+        <Reject Member="content" Type="qreal" Text="No magic value allowed in property"/>
+        -->
+    </Check>
+
+    <Check Class="QMLPropertyAssignment">
+        <!--
+        <Reject Member="content" Type="int" Text="No magic value allowed in property"/>
+        <Reject Member="content" Type="float" Text="No magic value allowed in property"/>
+        <Reject Member="content" Type="qreal" Text="No magic value allowed in property"/>
+        -->
+        <Reject Member="content" Class="QMLEntity" Text="No hardcoded colors allowed">
+            <Condition Member="name" Value="color"/>
+            <Condition Member="content" Value="transparent" Negate="true"/>
+        </Reject>
+        <Reject Member="content" Class="QMLEntity" Text="$NoHardcodedPosition$">
+            <Condition Member="name" Value="x"/>
+            <Condition Member="parent" Class="QMLItem"/>
+        </Reject>
+        <Reject Member="content" Class="QMLEntity" Text="$NoHardcodedPosition$">
+            <Condition Member="name" Value="y"/>
+            <Condition Member="parent" Class="QMLItem"/>
+        </Reject>
+    </Check>
+
+    <Check Class="QMLFunction">
+        <Accept Member="name" RegExp="$CamelCasingRegExp$" Text="$OnlyCamelCasing$"/>
+        <Reject Member="content" Count="20" Text="$TooManyStatements$"/>
+        <Reject UnreferencedSymbol="true"/>
+    </Check>
+
+    <Check Class="QMLConditional">
+        <Reject NestedCount="2" Text="No more than 2 nested conditional expressions allowed"/>
+    </Check>
+
+    <Check Class="QMLFor">
+        <Reject Member="content" Count="20" Text="$TooManyStatements$"/>
+    </Check>
+
+    <Check Class="QMLForIn">
+        <Reject Member="content" Count="20" Text="$TooManyStatements$"/>
+    </Check>
+
+    <Check Class="QMLIf">
+        <Reject NestedCount="5" Text="Too many nested ifs, consider using switch or a map"/>
+        <Reject Member="then" Count="20" Text="$TooManyStatements$"/>
+        <Reject Member="else" Count="20" Text="$TooManyStatements$"/>
+    </Check>
+
+    <Check Class="QMLImport">
+        <Accept Member="name" Path="Exists" Text="Import directory does not exist">
+            <Condition Member="version" Empty="true"/>
+        </Accept>
+        <Reject Used="false" Text="Import directory not used">
+            <Condition Member="version" Empty="true"/>
+            <Condition Member="as" Empty="true"/>
+        </Reject>
+        <Reject Member="version" Value="2.0" Text="$BadImportVersion$">
+            <Condition Member="name" Value="QtQuick"/>
+        </Reject>
+        <Reject Member="version" Value="2.1" Text="$BadImportVersion$">
+            <Condition Member="name" Value="QtQuick"/>
+        </Reject>
+        <Reject Member="version" Value="2.2" Text="$BadImportVersion$">
+            <Condition Member="name" Value="QtQuick"/>
+        </Reject>
+        <Reject Member="version" Value="2.3" Text="$BadImportVersion$">
+            <Condition Member="name" Value="QtQuick"/>
+        </Reject>
+        <Reject Member="version" Value="2.4" Text="$BadImportVersion$">
+            <Condition Member="name" Value="QtQuick"/>
+        </Reject>
+    </Check>
+
+    <Check Class="QMLItem">
+        <!--
+        <Reject Member="name" List="Rectangle,Image" Text="Item type not allowed">
+            <Condition Member="filename" Value="/components" Operation="Contains" Negate="true"/>
+            <Condition Member="filename" Value="/generic" Operation="Contains" Negate="true"/>
+        </Reject>
+        -->
+        <Reject UnreferencedSymbol="true"/>
+    </Check>
+</Root>

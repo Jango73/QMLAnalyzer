@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1141</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>QML Analyzer</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>:/qml/icons/ico-application.ico</normaloff>:/qml/icons/ico-application.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="mainVerticalLayout">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="primaryTab">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QSplitter" name="verticalSplitter">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <attribute name="title">
+        <string>Main</string>
+       </attribute>
+       <widget class="QWidget" name="frame">
+        <layout class="QGridLayout" name="mainHorizontalLayout">
+         <item row="0" column="0">
+          <widget class="QSplitter" name="horizontalSplitter">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <widget class="QTabWidget" name="secondaryTab"/>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="CStatusWidget" name="QMLStatus" native="true"/>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1141</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="exitAction"/>
+   </widget>
+   <widget class="QMenu" name="menuOptions">
+    <property name="title">
+     <string>Options</string>
+    </property>
+    <widget class="QMenu" name="menuDebug_2">
+     <property name="title">
+      <string>Debug</string>
+     </property>
+     <addaction name="dumpDocumentsAction"/>
+    </widget>
+    <addaction name="setEditorAction"/>
+    <addaction name="separator"/>
+    <addaction name="separator"/>
+    <addaction name="testAction"/>
+    <addaction name="menuDebug_2"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuOptions"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="setWorkspaceAction">
+   <property name="text">
+    <string>Set workspace</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="newProjectAction">
+   <property name="text">
+    <string>New Project...</string>
+   </property>
+   <property name="toolTip">
+    <string>Create a new project</string>
+   </property>
+  </action>
+  <action name="loadProjectAction">
+   <property name="text">
+    <string>Load Project...</string>
+   </property>
+   <property name="toolTip">
+    <string>Load an existing project</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="saveProjectAction">
+   <property name="text">
+    <string>Save Project</string>
+   </property>
+   <property name="toolTip">
+    <string>Save the current project</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="newPanelAction">
+   <property name="text">
+    <string>New Item</string>
+   </property>
+   <property name="toolTip">
+    <string>Create a new panel</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="generateQMLAction">
+   <property name="text">
+    <string>Generate QML</string>
+   </property>
+   <property name="toolTip">
+    <string>Generate stand-alone QML files</string>
+   </property>
+  </action>
+  <action name="generateCSVAction">
+   <property name="text">
+    <string>Generate CSV</string>
+   </property>
+   <property name="toolTip">
+    <string>Generate CSV files containing all panel properties</string>
+   </property>
+  </action>
+  <action name="takeScreenshotAction">
+   <property name="text">
+    <string>Take Screenshot</string>
+   </property>
+   <property name="toolTip">
+    <string>Take a screenshot of the current panel</string>
+   </property>
+  </action>
+  <action name="exitAction">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+   <property name="toolTip">
+    <string>Exit the application</string>
+   </property>
+  </action>
+  <action name="reloadTemplatesAction">
+   <property name="text">
+    <string>Reload Templates</string>
+   </property>
+   <property name="toolTip">
+    <string>Reload templates after edition</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="saveProjectAsAction">
+   <property name="text">
+    <string>Save project as...</string>
+   </property>
+   <property name="toolTip">
+    <string>Save project with a new file name</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="showHideSidePanels">
+   <property name="text">
+    <string>Toggle side panels</string>
+   </property>
+   <property name="toolTip">
+    <string>Shows or hides side panels</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Tab</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="editAction">
+   <property name="text">
+    <string>Edit Template</string>
+   </property>
+   <property name="toolTip">
+    <string>Edit the template of the current panel</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="setEditorAction">
+   <property name="text">
+    <string>Set Editor</string>
+   </property>
+   <property name="toolTip">
+    <string>Set the text editor used for panel edition</string>
+   </property>
+  </action>
+  <action name="reloadWorkspaceAction">
+   <property name="text">
+    <string>Reload Workspace</string>
+   </property>
+   <property name="toolTip">
+    <string>Reload the workspace after changing its xml file</string>
+   </property>
+  </action>
+  <action name="panelDesignerAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Panel Designer</string>
+   </property>
+   <property name="toolTip">
+    <string>Set user mode to panel designer</string>
+   </property>
+  </action>
+  <action name="templateDesignerAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Template Designer</string>
+   </property>
+   <property name="toolTip">
+    <string>Set user mode to template designer</string>
+   </property>
+  </action>
+  <action name="applicationModeAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Mode</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle application mode between edition and runtime</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Return</string>
+   </property>
+  </action>
+  <action name="createLinkAction">
+   <property name="text">
+    <string>Create link</string>
+   </property>
+   <property name="toolTip">
+    <string>Create a link from a button to a panel</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+K</string>
+   </property>
+  </action>
+  <action name="runtimeMinimalAction">
+   <property name="text">
+    <string>Runtime minimal screen</string>
+   </property>
+   <property name="toolTip">
+    <string>Runtime without application UI</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+Return</string>
+   </property>
+  </action>
+  <action name="showInExplorerAction">
+   <property name="text">
+    <string>Show in explorer</string>
+   </property>
+   <property name="toolTip">
+    <string>Show the current template in the file explorer</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+E</string>
+   </property>
+  </action>
+  <action name="linkGraphAction">
+   <property name="text">
+    <string>Link graph</string>
+   </property>
+   <property name="toolTip">
+    <string>Show a graph for links of current panel</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+K</string>
+   </property>
+  </action>
+  <action name="setScreenshotDirectoryAction">
+   <property name="text">
+    <string>Set screenshot directory</string>
+   </property>
+  </action>
+  <action name="setCSVExportDirectoryAction">
+   <property name="text">
+    <string>Set CSV export directory</string>
+   </property>
+  </action>
+  <action name="setQMLExportDirectoryAction">
+   <property name="text">
+    <string>Set QML export directory</string>
+   </property>
+  </action>
+  <action name="setHomePanelAction">
+   <property name="text">
+    <string>Set home item</string>
+   </property>
+   <property name="toolTip">
+    <string>Set the home item for runtime mode</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+H</string>
+   </property>
+  </action>
+  <action name="editQMLPropertiesAction">
+   <property name="text">
+    <string>Edit QML Properties</string>
+   </property>
+  </action>
+  <action name="setZoomFit">
+   <property name="text">
+    <string>Fit</string>
+   </property>
+  </action>
+  <action name="setZoom100">
+   <property name="text">
+    <string>100%</string>
+   </property>
+  </action>
+  <action name="setZoom75">
+   <property name="text">
+    <string>75%</string>
+   </property>
+  </action>
+  <action name="setZoom50">
+   <property name="text">
+    <string>50%</string>
+   </property>
+  </action>
+  <action name="setZoom25">
+   <property name="text">
+    <string>25%</string>
+   </property>
+  </action>
+  <action name="testAction">
+   <property name="text">
+    <string>Test</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
+  </action>
+  <action name="dumpDocumentsAction">
+   <property name="text">
+    <string>Dump documents</string>
+   </property>
+   <property name="visible">
+    <bool>true</bool>
+   </property>
+  </action>
+  <action name="showZoningAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Toggle zoning</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle zoning</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CStatusWidget</class>
+   <extends>QWidget</extends>
+   <header>CStatusWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
