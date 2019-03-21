@@ -3,5 +3,7 @@
         <file>style/Theme_Default.css</file>
         <file>style/Theme_White.css</file>
         <file>style/Theme_Orange.css</file>
+        <file>misc/help.html</file>
+        <file>misc/css/offline.css</file>
     </qresource>
 </RCC>

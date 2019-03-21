@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>QMLAnalyzer</title>
+<link rel="stylesheet" type="text/css" href="css/offline.css" /></head>
+<body>
+<div id="maincontents">
+    <h2>Analyzer view</h2>
+    <p>Does static analysis of QML files.</p>
+    <h3>Folder</h3>
+    <p>Specifies the folder from which every QML file will be analyzed.</p>
+    <h3>Include sub folders</h3>
+    <p>If this is checked, the search for QML files will include every sub folders of the base folder.</p>
+    <h3>Grammar file</h3>
+    <p>Specifies which file to use as a grammar file for coding rule checks. See below for description of this file.</p>
+    <h3>Run</h3>
+    <p>Launches the analysis of all QML files that reside in the base folder and all sub folders if asked.</p>
+    <h3>Experimental</h3>
+    <p>This is a feature that is not completely finished.</p>
+
+    <h2>DOM view</h2>
+    <h3>File</h3>
+    <p>Specifies the file currently displayed.</p>
+    <h3>Tree view</h3>
+    <p>Shows every node in the XML file, and its attributes.</p>
+
+    <h2>Folder view</h2>
+    <p>TODO.</p>
+
+    <h2>Specifications</h2>
+
+    <h3>Coding rule file format</h3>
+    <h4>&lt;Root&gt;</h4>
+    <p>
+        This node is the root of the document.
+        It may contain the following nodes:
+        <ul>
+            <li>&lt;Macro&gt;</li>
+            <li>&lt;Check&gt;</li>
+        </ul>
+    </p>
+    <h4>&lt;Macro&gt;</h4>
+    <p>
+        This node defines a macro.
+        It may contain the following attributes:
+        <ul>
+            <li>"Name" : The name of the macro</li>
+            <li>"Value" : The text of the macro</li>
+        </ul>
+    </p>
+    <h4>&lt;Check&gt;</h4>
+    <p>
+        This node defines a code check.
+        It must contain the following attributes:
+        <ul>
+            <li>"Class" : The name of an expression class on which to apply the check. See below for available classes.</li>
+        </ul>
+        It may contain the following nodes:
+        <ul>
+            <li>"Accept" : An accept check</li>
+            <li>"Reject" : A reject check</li>
+        </ul>
+        An &lt;Accept&gt; tag will yield an error if its contents evaluate to false.
+        A &lt;Reject&gt; tag will yield an error if its contents evaluate to true.
+    </p>
+    <h4>&lt;Accept&gt; and &lt;Reject&gt;</h4>
+    <p>
+        This node defines how the class should be checked.
+        It may contain the following attributes:
+        <ul>
+            <li>Member - Defines the member that we want to check. Please refer to the "List of classes and their members" section.</li>
+            <li>Class - Makes the analyzer compare this value against the class name of Member.</li>
+            <li>Value - Makes the analyzer compare this value against the value of Member.</li>
+            <li>RegExp - Makes the analyzer compare this regular expression against the value of Member. An exact match evaluates to true.</li>
+            <li>Count - Makes the analyzer count the contents of Member. Does not require the Member attribute.</li>
+            <li>NestedCount - Makes the analyzer recursively count the occurence of this class. Does not require the Member attribute.</li>
+            <li>Text - Defines the text to output when the rule yields an error.</li>
+        </ul>
+    </p>
+    <h4>Example</h4>
+    Suppose we want to check (and reject) any hardcoded color strings. The rule will be defined as:<br><br>
+    &lt;Check Class="QMLPropertyAssignment"&gt;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&lt;Reject Member="content" Class="QMLEntity" Text="No hardcoded colors allowed"&gt;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&lt;/Reject&gt;<br>
+    &lt;/Check&gt;<br><br>
+    First, we begin a &lt;Check&gt; tag for the class QMLPropertyAssignment, because this is what is stored in the QML tree for an expression like color: "#FF0000".
+    Second, we use a &lt;Reject&gt; tag because we want to yield an error when the rule evaluates to true.
+    In the &lt;Reject&gt; tag we use the following attributes:
+    <ul>
+        <li>Member is set to content : we are interested by the contents of the assignment (right part of the '=' token).</li>
+        <li>Class is set to QMLEntity : we want something more complex than a simple value in the right part of the assignment, like a QMLIdentifier or a QMLBinaryOperation.</li>
+        <li>Text is set to No hardcoded colors allowed : that's what we want to tell the user when the check yields an error.</li>
+    </ul>
+    Now this is not enough because this rule would run through ALL property assignments in the file, but we want only color properties to be processed.
+    That's when the &lt;Condition&gt; tag comes in. It allows us to place conditions, thus refining the rule.<br><br>
+    &lt;Check Class="QMLPropertyAssignment"&gt;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&lt;Reject Member="content" Class="QMLEntity" Text="No hardcoded colors allowed"&gt;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Condition Member="name" Value="color"/&gt;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Condition Member="content" Value="transparent" Negate="true"/&gt;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&lt;/Reject&gt;<br>
+    &lt;/Check&gt;<br><br>
+    The conditions tell the analyzer that the rule should be run only when:
+    <ul>
+        <li>The QMLPropertyAssignment member name is equal to color</li>
+        <li>The QMLPropertyAssignment member content is not equal to "transparent" (the Negate attributes inverses the logic)</li>
+    </ul>
+
+    <h3>Coding rule classes</h3>
+    <p>
+        The following list defines class Names that can be used in the coding rule file.
+        Below the class name are the members that can be refered to.
+    </p>
+
+    <ul>
+    <li>QMLEntity - The base of all classes</li>
+    <li>QMLComplexEntity - The base class classes that have more than one content. The contents of the entity are for now inaccessible.</li>
+    <ul>
+       <li>name - The name of the entity</li>
+    </ul>
+        <li>QMLComment (extends QMLEntity) - A string that is a comment.</li>
+        <li>QMLIdentifier (extends QMLEntity) - A string that is an identifier.</li>
+        <li>QMLPragma - A pragma statement like [ pragma Singleton ]</li>
+    <ul>
+        <li>statement - The statement of the pragma</li>
+    </ul>
+    <li>QMLImport (extends QMLEntity) - An import statement like [ import QtQuick 2.5 ] or [ import "." ]</li>
+    <ul>
+        <li>name - The name following the "import" token, either an identifier or a path in a string</li>
+        <li>version - The version following the name (if any)</li>
+        <li>as - The name following the "as" statement if any</li>
+    </ul>
+    <li>QMLItem (extends QMLComplexEntity) - A QML item like [ Rectangle ]</li>
+    <ul>
+        <li>name - The name of the item</li>
+    </ul>
+    <li>QMLPropertyDeclaration (extends QMLEntity) - A property declaration like [ property color myColor ]</li>
+    <ul>
+        <li>type - The type of the property</li>
+        <li>name - The name of the property</li>
+        <li>content - The contents of the property (can be any class extending QMLEntity)</li>
+    </ul>
+    <li>QMLPropertyAssignment (extends QMLPropertyDeclaration) - A property assignement like [ id: root ]</li>
+    <ul>
+        <li>type - The type of the property</li>
+        <li>name - The name of the property</li>
+        <li>content - The contents of the property (can be any class extending QMLEntity)</li>
+    </ul>
+    <li>QMLPropertyAlias (extends QMLPropertyAssignment) - A property alias like [ property alias source: myImage.source ]</li>
+    <ul>
+        <li>type - The type of the property</li>
+        <li>name - The name of the property</li>
+        <li>content - The contents of the property (can be any class extending QMLEntity)</li>
+    </ul>
+    <li>QMLFunction (extends QMLEntity) - A function declaration</li>
+    <ul>
+        <li>name - The name of the function</li>
+        <li>parameters - The parameters of the function</li>
+        <li>content - The contents of the function (can be any class extending QMLEntity)</li>
+    </ul>
+    <li>QMLFunctionCall (extends QMLEntity) - A function call</li>
+    <ul>
+        <li>name - The name of the function which is called</li>
+        <li>arguments - The parameters passed to the function</li>
+    </ul>
+    <li>QMLIf (extends QMLEntity) - An if statement</li>
+    <ul>
+        <li>condition - The expression specified between the '(' and ')' tokens (can be any class extending QMLEntity)</li>
+        <li>then - The statement executed when the condition evaluates to TRUE (can be any class extending QMLEntity)</li>
+        <li>else - The statement executed when the condition evaluates to FALSE (can be any class extending QMLEntity)</li>
+    </ul>
+    <li>QMLConditional (extends QMLIf) - A conditional expression like [ foo ? 0 : bar ]</li>
+    <ul>
+        <li>condition - The expression specified before the '?' token (can be any class extending QMLEntity)</li>
+        <li>then - The statement executed when the condition evaluates to TRUE (can be any class extending QMLEntity)</li>
+        <li>else - The statement executed when the condition evaluates to FALSE (can be any class extending QMLEntity)</li>
+    </ul>
+    <li>QMLFor (extends QMLEntity) - A for loop like [ for (foo = 0; foo &lt; bar; foo++) { } ]</li>
+    <ul>
+        <li>initialization - The statement before the first ';' token (can be any class extending QMLEntity)</li>
+        <li>condition - The expression before the second ';' token (can be any class extending QMLEntity)</li>
+        <li>incrementation - The statement after the second ';' token (can be any class extending QMLEntity)</li>
+        <li>content - The contents of the loop (can be any class extending QMLEntity)</li>
+    </ul>
+    <li>QMLForIn (extends QMLEntity) - A for-in loop like [ for (var foo in bar) { } ]</li>
+    <ul>
+        <li>variable - The variable (can be any class extending QMLEntity)</li>
+        <li>expression - The expression filling the variable (can be any class extending QMLEntity)</li>
+        <li>content - The contents of the loop (can be any class extending QMLEntity)</li>
+    </ul>
+    <li>QMLSwitch (extends QMLEntity) - A switch/case statement</li>
+    <ul>
+        <li>expression - The expression (can be any class extending QMLEntity)</li>
+        <li>cases - A QMLComplexEntity containing the cases</li>
+    </ul>
+    <li>QMLBinaryOperation (extends QMLEntity) - A binary operation like [ foo + bar ]</li>
+    <ul>
+        <li>left - The expression that is left of the operator (can be any class extending QMLEntity)</li>
+        <li>right - The expression that is right of the operator (can be any class extending QMLEntity)</li>
+    </ul>
+    <li>QMLArrayAccess (extends QMLComplexEntity) - An array access like [ foo[bar] ]. The expression(s) inside the '[]' tokens are for now inaccessible.</li>
+    <ul>
+        <li>left - The expression that is left of the operator (can be any class extending QMLEntity)</li>
+    </ul>
+    </ul>
+
+</div>
+</body>
+</html>
