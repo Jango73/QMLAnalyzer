@@ -79,7 +79,7 @@ void CDOMView::openFileInternal(const QString& sFileName)
     {
         setXMLFile(sFileName);
     }
-    else
+    else if (sFileName.toLower().endsWith(".qml"))
     {
         QString sXMLFile = "Temp.xml";
         QMLTreeContext context;

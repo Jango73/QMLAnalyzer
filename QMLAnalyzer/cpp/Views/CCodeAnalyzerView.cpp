@@ -499,6 +499,7 @@ void CCodeAnalyzerView::onItemDoubleClicked(QModelIndex index)
         {
             // m_pController->domView()->openFile(sFileName);
             // emit m_pController->requestDOMView();
+            emit requestDOMOpen(sFileName);
         }
     }
 }

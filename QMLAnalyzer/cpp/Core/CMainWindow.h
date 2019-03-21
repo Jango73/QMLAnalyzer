@@ -35,9 +35,6 @@ public:
     // Enumerators
     //-------------------------------------------------------------------------------------------------
 
-    // Tabs list
-    enum EPrimaryTabs { MAIN_VIEW, CODE_ANALYZER_VIEW, DOM_VIEW };
-
     // Exit operation
     enum EOperation { NO_OPERATION, SAVED, IGNORED, CANCELLED };
 
@@ -85,9 +82,6 @@ private:
 
 signals:
 
-    // Current file changed
-    void currentFileChanged();
-
     //-------------------------------------------------------------------------------------------------
     // Slots
     //-------------------------------------------------------------------------------------------------
@@ -96,6 +90,9 @@ public slots:
 
     // Exit
     void onExit();
+
+    //!
+    void onRequestDOMOpen(QString sFileName);
 
     //-------------------------------------------------------------------------------------------------
     // Properties
@@ -128,8 +125,4 @@ private:
 
     // Log blacklist
     QStringList m_lLogBlacklist;
-
-    CCodeAnalyzerView*          m_pCodeAnalyzerView;
-    CDOMView*                   m_pDOMView;
-    CFolderView*                m_pFolderView;
 };

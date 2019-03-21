@@ -44,29 +44,8 @@ void myMessageHandler(QtMsgType type, const QMessageLogContext& context, const Q
 
 /*!
     \class CMainWindow
-    \inmodule QMLPrototyperApp
-    \brief A main window for QMLPrototyper.
-*/
-
-/*!
-    \enum CMainWindow::EPrimaryTabs
-
-    Defines the primary tabs of the main window.
-
-    \value MAIN_VIEW
-    The main view.
-
-    \value CODE_ANALYZER_VIEW
-    The code analyzer view.
-
-    \value DOM_VIEW
-    The DOM view.
-*/
-
-/*!
-    \fn CMainWindow::currentFileChanged()
-
-    This signal is emitted when the current file has changed.
+    \inmodule QMLAnalyzer
+    \brief A main window for QMLAnalyzer.
 */
 
 //-------------------------------------------------------------------------------------------------
@@ -123,21 +102,10 @@ CMainWindow::CMainWindow(QApplication* pApplication, QStringList lArguments, QWi
     // Process command line arguments
     processCommandLineArguments();
 
-    // Folder view
-    // To be activated when working
-    m_pFolderView = new CFolderView(this);
-    m_pUI->primaryTab->insertTab(0, m_pFolderView, tr("Folder view"));
+    // Signals
+    connect(m_pUI->analyzer, SIGNAL(requestDOMOpen(QString)), this, SLOT(onRequestDOMOpen(QString)));
 
-    // DOM view
-    m_pDOMView = new CDOMView();
-    m_pUI->primaryTab->insertTab(0, m_pDOMView, tr("DOM view"));
-
-    // Code analyzer view
-    m_pCodeAnalyzerView = new CCodeAnalyzerView();
-    m_pUI->primaryTab->insertTab(0, m_pCodeAnalyzerView, tr("Code analyzer"));
-
-    m_pUI->primaryTab->setCurrentIndex(0);
-
+    // Theme
     setTheme("Theme_Default");
 }
 
@@ -259,10 +227,10 @@ void CMainWindow::createActions()
 void CMainWindow::createRecentFilesMenus()
 {
     // Recent projects menu:
-    m_pRecentFileMenu = new CRecentFileMenu(tr("Recent Projects"), "Recent Projects", this);
-    QAction *pRecentFileMenuAction = m_pUI->menuFile->addMenu(m_pRecentFileMenu);
-    m_pUI->menuFile->insertAction(m_pUI->newProjectAction, pRecentFileMenuAction);
-    // connect(m_pRecentFileMenu, &CRecentFileMenu::openRecentFile, this, &CMainWindow::onOpenRecentFile);
+//    m_pRecentFileMenu = new CRecentFileMenu(tr("Recent Projects"), "Recent Projects", this);
+//    QAction *pRecentFileMenuAction = m_pUI->menuFile->addMenu(m_pRecentFileMenu);
+//    m_pUI->menuFile->insertAction(m_pUI->newProjectAction, pRecentFileMenuAction);
+//    connect(m_pRecentFileMenu, &CRecentFileMenu::openRecentFile, this, &CMainWindow::onOpenRecentFile);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -273,6 +241,13 @@ void CMainWindow::createRecentFilesMenus()
 void CMainWindow::onExit()
 {
     close();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CMainWindow::onRequestDOMOpen(QString sFileName)
+{
+    m_pUI->domView->openFile(sFileName);
 }
 
 //-------------------------------------------------------------------------------------------------

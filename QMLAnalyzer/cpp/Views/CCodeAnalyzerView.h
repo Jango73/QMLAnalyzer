@@ -16,8 +16,6 @@
 //-------------------------------------------------------------------------------------------------
 // Forward declarations
 
-class CMainController;
-
 namespace Ui {
     class CCodeAnalyzerView;
 }
@@ -121,7 +119,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     //! Constructor
-    CCodeAnalyzerView(QWidget* parent = 0);
+    explicit CCodeAnalyzerView(QWidget* parent = 0);
 
     //-------------------------------------------------------------------------------------------------
     // Protected methods
@@ -133,7 +131,11 @@ protected:
 
 signals:
 
+    //!
     void newData(QMLAnalyzerError error);
+
+    //!
+    void requestDOMOpen(QString sFileName);
 
     //-------------------------------------------------------------------------------------------------
     // Slots

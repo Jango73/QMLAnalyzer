@@ -18,19 +18,56 @@
     <normaloff>:/qml/icons/ico-application.ico</normaloff>:/qml/icons/ico-application.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="mainVerticalLayout">
-    <item row="0" column="0">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QTabWidget" name="primaryTab">
         <property name="currentIndex">
-         <number>-1</number>
+         <number>0</number>
         </property>
+        <widget class="QWidget" name="analyzerPage">
+         <attribute name="title">
+          <string>Code analyzer</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="CCodeAnalyzerView" name="analyzer" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="domViewPage">
+         <attribute name="title">
+          <string>DOM view</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="CDOMView" name="domView" native="true"/>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="folderViewPage">
+         <attribute name="title">
+          <string>Folder view</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="CFolderView" name="folderView" native="true"/>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </item>
      </layout>
     </item>
-    <item row="1" column="0">
+    <item>
      <widget class="CStatusWidget" name="QMLStatus" native="true">
       <property name="maximumSize">
        <size>
@@ -38,6 +75,7 @@
         <height>300</height>
        </size>
       </property>
+      <zorder>primaryTab</zorder>
      </widget>
     </item>
    </layout>
@@ -394,6 +432,24 @@
    <class>CStatusWidget</class>
    <extends>QWidget</extends>
    <header>CStatusWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CCodeAnalyzerView</class>
+   <extends>QWidget</extends>
+   <header>CCodeAnalyzerView.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CDOMView</class>
+   <extends>QWidget</extends>
+   <header>CDOMView.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CFolderView</class>
+   <extends>QWidget</extends>
+   <header>CFolderView.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
