@@ -13,18 +13,26 @@
     <p>Specifies the folder from which every QML file will be analyzed.</p>
     <h3>Include sub folders</h3>
     <p>If this is checked, the search for QML files will include every sub folders of the base folder.</p>
-    <h3>Grammar file</h3>
-    <p>Specifies which file to use as a grammar file for coding rule checks. See below for description of this file.</p>
+    <h3>Code rule file</h3>
+    <p>Specifies which file to use as a coding rule file for coding rule checks. See below for description of this file.</p>
+    <h3>Format file</h3>
+    <p>Specifies which file to use as a formatting file when writing back QML files. See below for description of this file.</p>
     <h3>Run</h3>
     <p>Launches the analysis of all QML files that reside in the base folder and all sub folders if asked.</p>
     <h3>Experimental</h3>
-    <p>This is a feature that is not completely finished.</p>
+    <p>
+        This is a feature that is not completely finished.<br>
+        It writes back every file using auto formatting.
+    </p>
+    <h3>Bottom left: coding rule errors</h3>
+    <p>This displays all coding rule errors found in the analyzed QML files. Doucle clicking one of these will open it in the DOM view.</p>
+    <h3>Bottom right: code editor</h3>
+    <p>This allows edition of the selected file in the bottom left list.</p>
 
     <h2>DOM view</h2>
+    <p>Displays the contents of an XML file in a tree view.</p>
     <h3>File</h3>
     <p>Specifies the file currently displayed.</p>
-    <h3>Tree view</h3>
-    <p>Shows every node in the XML file, and its attributes.</p>
 
     <h2>Folder view</h2>
     <p>TODO.</p>
@@ -62,7 +70,7 @@
             <li>"Accept" : An accept check</li>
             <li>"Reject" : A reject check</li>
         </ul>
-        An &lt;Accept&gt; tag will yield an error if its contents evaluate to false.
+        An &lt;Accept&gt; tag will yield an error if its contents evaluate to false.<br>
         A &lt;Reject&gt; tag will yield an error if its contents evaluate to true.
     </p>
     <h4>&lt;Accept&gt; and &lt;Reject&gt;</h4>
@@ -77,6 +85,25 @@
             <li>Count - Makes the analyzer count the contents of Member. Does not require the Member attribute.</li>
             <li>NestedCount - Makes the analyzer recursively count the occurence of this class. Does not require the Member attribute.</li>
             <li>Text - Defines the text to output when the rule yields an error.</li>
+        </ul>
+        It may contain the following nodes:
+        <ul>
+            <li>"Condition" : A condition to check</li>
+        </ul>
+    </p>
+    <h4>&lt;Condition&gt;</h4>
+    <p>
+        This node defines how the class should be checked.
+        It may contain the following attributes:
+        <ul>
+            <li>Member - Defines the member that we want to check. Please refer to the "List of classes and their members" section.</li>
+            <li>Value - Makes the analyzer compare this value with the value of Member.</li>
+            <li>Negate - When equal to true, reverses the logic of the condition test.</li>
+            <li>Operation (Optional) - Specifies the type of operation to do on Member and Value.</li>
+                <ul>
+                    <li>&lt;empty&gt; - Yields true if Member is equal to Value</li>
+                    <li>Contains - Yields true if Member contains Value</li>
+                </ul>
         </ul>
     </p>
     <h4>Example</h4>

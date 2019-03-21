@@ -247,6 +247,7 @@ void CMainWindow::onExit()
 void CMainWindow::onRequestDOMOpen(QString sFileName)
 {
     m_pUI->domView->openFile(sFileName);
+    m_pUI->primaryTab->setCurrentIndex(1);
 }
 
 //-------------------------------------------------------------------------------------------------

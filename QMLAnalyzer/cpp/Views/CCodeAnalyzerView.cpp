@@ -247,20 +247,20 @@ CCodeAnalyzerView::CCodeAnalyzerView(QWidget *parent)
 {
     ui->setupUi(this);
     ui->ruleFileName->setText("CodingRules.xml");
-    // ui->formatFileName->setText("Format.xml");
+    ui->formatFileName->setText("Format.xml");
     ui->textEdit->setWordWrapMode(QTextOption::NoWrap);
 
     m_pCompleter->setModel(new QDirModel(m_pCompleter));
     ui->directoryName->setCompleter(m_pCompleter);
     ui->ruleFileName->setCompleter(m_pCompleter);
-    // ui->formatFileName->setCompleter(m_pCompleter);
+    ui->formatFileName->setCompleter(m_pCompleter);
 
     m_tErrorsProxy.setSourceModel(&m_mErrors);
     ui->errors->setModel(&m_tErrorsProxy);
 
     connect(ui->browseDirectory, SIGNAL(clicked(bool)), this, SLOT(onBrowseClicked(bool)));
     connect(ui->browseRuleFile, SIGNAL(clicked(bool)), this, SLOT(onBrowseRuleFileClicked(bool)));
-    // connect(ui->browseRuleFile, SIGNAL(clicked(bool)), this, SLOT(onBrowseFormatFileClicked(bool)));
+    connect(ui->browseRuleFile, SIGNAL(clicked(bool)), this, SLOT(onBrowseFormatFileClicked(bool)));
     connect(ui->runButton, SIGNAL(clicked(bool)), this, SLOT(onRunClicked(bool)));
     connect(ui->exportReport, SIGNAL(clicked(bool)), this, SLOT(onExportReportClicked(bool)));
     connect(ui->errors, SIGNAL(clicked(QModelIndex)), this, SLOT(onItemClicked(QModelIndex)));
@@ -330,6 +330,20 @@ void CCodeAnalyzerView::onBrowseRuleFileClicked(bool bValue)
 
 //-------------------------------------------------------------------------------------------------
 
+void CCodeAnalyzerView::onBrowseFormatFileClicked(bool bValue)
+{
+    Q_UNUSED(bValue);
+
+    QString sFormatFileName = QFileDialog::getOpenFileName(this, tr("Select format file"), "", "*.xml");
+
+    if (sFormatFileName.isEmpty() == false)
+    {
+        ui->formatFileName->setText(sFormatFileName);
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void CCodeAnalyzerView::onRunClicked(bool bValue)
 {
     Q_UNUSED(bValue);
@@ -352,7 +366,7 @@ void CCodeAnalyzerView::onRunClicked(bool bValue)
         m_pAnalyzer->setFolder(sFolder);
         m_pAnalyzer->threadedAnalyze(
                     CXMLNode::load(ui->ruleFileName->text()),
-                    CXMLNode::load("Format.xml")
+                    CXMLNode::load(ui->formatFileName->text())
                     );
     }
     else
@@ -497,8 +511,6 @@ void CCodeAnalyzerView::onItemDoubleClicked(QModelIndex index)
 
         if (sFileName.isEmpty() == false)
         {
-            // m_pController->domView()->openFile(sFileName);
-            // emit m_pController->requestDOMView();
             emit requestDOMOpen(sFileName);
         }
     }

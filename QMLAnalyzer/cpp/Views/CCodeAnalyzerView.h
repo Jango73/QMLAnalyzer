@@ -150,6 +150,9 @@ protected slots:
     void onBrowseRuleFileClicked(bool bValue);
 
     //!
+    void onBrowseFormatFileClicked(bool bValue);
+
+    //!
     void onRunClicked(bool bValue);
 
     //!
