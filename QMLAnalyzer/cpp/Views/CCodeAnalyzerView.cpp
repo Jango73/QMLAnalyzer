@@ -246,18 +246,21 @@ CCodeAnalyzerView::CCodeAnalyzerView(QWidget *parent)
     , m_pCompleter(new QCompleter(this))
 {
     ui->setupUi(this);
-    ui->ruleFileName->setText("Coding_Rules.xml");
+    ui->ruleFileName->setText("CodingRules.xml");
+    // ui->formatFileName->setText("Format.xml");
     ui->textEdit->setWordWrapMode(QTextOption::NoWrap);
 
     m_pCompleter->setModel(new QDirModel(m_pCompleter));
     ui->directoryName->setCompleter(m_pCompleter);
     ui->ruleFileName->setCompleter(m_pCompleter);
+    // ui->formatFileName->setCompleter(m_pCompleter);
 
     m_tErrorsProxy.setSourceModel(&m_mErrors);
     ui->errors->setModel(&m_tErrorsProxy);
 
     connect(ui->browseDirectory, SIGNAL(clicked(bool)), this, SLOT(onBrowseClicked(bool)));
     connect(ui->browseRuleFile, SIGNAL(clicked(bool)), this, SLOT(onBrowseRuleFileClicked(bool)));
+    // connect(ui->browseRuleFile, SIGNAL(clicked(bool)), this, SLOT(onBrowseFormatFileClicked(bool)));
     connect(ui->runButton, SIGNAL(clicked(bool)), this, SLOT(onRunClicked(bool)));
     connect(ui->exportReport, SIGNAL(clicked(bool)), this, SLOT(onExportReportClicked(bool)));
     connect(ui->errors, SIGNAL(clicked(QModelIndex)), this, SLOT(onItemClicked(QModelIndex)));
@@ -347,7 +350,10 @@ void CCodeAnalyzerView::onRunClicked(bool bValue)
         m_pAnalyzer->setRewriteFiles(ui->rewriteFiles->checkState() == Qt::Checked);
         m_pAnalyzer->setRemoveUnreferencedSymbols(ui->removeUnreferencedSymbols->checkState() == Qt::Checked);
         m_pAnalyzer->setFolder(sFolder);
-        m_pAnalyzer->threadedAnalyze(CXMLNode::load(ui->ruleFileName->text()));
+        m_pAnalyzer->threadedAnalyze(
+                    CXMLNode::load(ui->ruleFileName->text()),
+                    CXMLNode::load("Format.xml")
+                    );
     }
     else
     {

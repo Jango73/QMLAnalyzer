@@ -16,7 +16,7 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+    QApplication application(argc, argv);
 
     qRegisterMetaType<QMLAnalyzerError>("QMLAnalyzerError");
 
@@ -37,10 +37,10 @@ int main(int argc, char *argv[])
     else
     {
         // Launch application:
-        CMainWindow mainWindow(lArguments, nullptr);
+        CMainWindow mainWindow(&application, lArguments, nullptr);
         mainWindow.show();
 
-        return app.exec();
+        return application.exec();
     }
 
     return 0;

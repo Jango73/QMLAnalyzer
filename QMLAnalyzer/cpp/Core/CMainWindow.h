@@ -46,7 +46,7 @@ public:
     //-------------------------------------------------------------------------------------------------
 
     // Constructor
-    CMainWindow(QStringList lArguments, QWidget* parent = 0);
+    CMainWindow(QApplication* pApplication, QStringList lArguments, QWidget* parent = 0);
 
     // Destructor
     virtual ~CMainWindow();
@@ -73,17 +73,11 @@ private:
     // Create recent files menu
     void createRecentFilesMenus();
 
-    // Reload editor
-    void reloadEditor();
-
     // Set up QML status
     void setupQMLStatus();
 
-    // Handle dirty state
-    EOperation handleDirtyState();
-
-    // Save UI state
-    void saveUIState();
+    //!
+    void setTheme(const QString& sTheme);
 
     //-------------------------------------------------------------------------------------------------
     // Signals
@@ -111,6 +105,8 @@ private:
 
     // UI
     Ui::MainWindow* m_pUI;
+
+    QApplication* m_pApplication;
 
     // Recent file menu
     CRecentFileMenu* m_pRecentFileMenu;

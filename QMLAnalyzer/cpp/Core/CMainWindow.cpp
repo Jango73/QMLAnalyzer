@@ -77,9 +77,10 @@ void myMessageHandler(QtMsgType type, const QMessageLogContext& context, const Q
     \a lArguments is a list of command line arguments.
     \a parent is the owner widget of this object.
 */
-CMainWindow::CMainWindow(QStringList lArguments, QWidget *parent)
+CMainWindow::CMainWindow(QApplication* pApplication, QStringList lArguments, QWidget *parent)
     : QMainWindow(parent)
     , m_pUI(new Ui::MainWindow)
+    , m_pApplication(pApplication)
     , m_pRecentFileMenu(nullptr)
     , m_pRecentWorkspaceMenu(nullptr)
     , m_sCurrentFile("")
@@ -136,6 +137,8 @@ CMainWindow::CMainWindow(QStringList lArguments, QWidget *parent)
     m_pUI->primaryTab->insertTab(0, m_pCodeAnalyzerView, tr("Code analyzer"));
 
     m_pUI->primaryTab->setCurrentIndex(0);
+
+    setTheme("Theme_Default");
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -270,6 +273,28 @@ void CMainWindow::createRecentFilesMenus()
 void CMainWindow::onExit()
 {
     close();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void CMainWindow::setTheme(const QString& sTheme)
+{
+    if (m_pApplication != nullptr)
+    {
+        QString sStyle = QString(":/style/%1.css").arg(sTheme);
+
+        // Set style sheet
+        QFile file(sStyle);
+
+        if (file.open(QFile::ReadOnly | QFile::Text))
+        {
+            QTextStream stream(&file);
+            QString sStyle = stream.readAll();
+
+            m_pApplication->setStyleSheet(sStyle);
+            file.close();
+        }
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
