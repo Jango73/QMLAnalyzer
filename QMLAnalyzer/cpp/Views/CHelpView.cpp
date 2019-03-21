@@ -8,5 +8,5 @@
 CHelpView::CHelpView(QWidget* pParent)
     : CHTMLView(pParent)
 {
-    load(":/documentation/PanelDesigner_User_Manual.htm");
+    load(":/documentation/help.htm");
 }

@@ -14,9 +14,8 @@
 #include <QDateTime>
 
 // Application
-#include "CMainWindow.h"
 #include "ui_MainWindow.h"
-#include "CSpacerItem.h"
+#include "CMainWindow.h"
 #include "CRecentFileMenu.h"
 #include "CStatusWidget.h"
 

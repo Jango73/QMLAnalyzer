@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>This UI enables to move QML files around with automatic adjustments of paths inside the QML code (WIP)</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This UI enables to move QML files around with automatic adjustments of paths inside the QML code (WIP)&lt;/p&gt;&lt;p&gt;Use at your own risk.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>

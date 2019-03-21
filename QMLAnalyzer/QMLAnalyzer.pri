@@ -13,7 +13,6 @@ HEADERS += \
     cpp/Views/CHTMLView.h \
     cpp/Widgets/CCodeEditor.h \
     cpp/Widgets/CRecentFileMenu.h \
-    cpp/Widgets/CSpacerItem.h \
     cpp/Widgets/CStatusWidget.h
 
 SOURCES += \
@@ -30,7 +29,6 @@ SOURCES += \
     cpp/Views/CHTMLView.cpp \
     cpp/Widgets/CCodeEditor.cpp \
     cpp/Widgets/CRecentFileMenu.cpp \
-    cpp/Widgets/CSpacerItem.cpp \
     cpp/Widgets/CStatusWidget.cpp
 
 FORMS += \

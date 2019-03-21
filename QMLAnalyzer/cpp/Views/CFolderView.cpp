@@ -199,7 +199,7 @@ void CFolderView::resizeEvent(QResizeEvent* event)
     double w, column0Width, column1Width, column2Width, column3Width;
 
     w = m_pUI->leftTree->width() - 10;
-    column0Width = w * 0.5;
+    column0Width = w * 0.5000;
     column1Width = w * 0.1666;
     column2Width = w * 0.1666;
     column3Width = w * 0.1666;
@@ -210,7 +210,7 @@ void CFolderView::resizeEvent(QResizeEvent* event)
     m_pUI->leftTree->setColumnWidth(3, column3Width);
 
     w = m_pUI->rightTree->width() - 10;
-    column0Width = w * 0.5;
+    column0Width = w * 0.5000;
     column1Width = w * 0.1666;
     column2Width = w * 0.1666;
     column3Width = w * 0.1666;
